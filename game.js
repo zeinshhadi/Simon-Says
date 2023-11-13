@@ -60,29 +60,24 @@ function startComputerSequence() {
    }, computerSequence.length * 800);
 }
 
-//user turn start whenever he click and event is loaded and sent to its corresponding functions with the id according to color
-//by getting the id of the event click which in this case the name of the color as srting
+//user turn starts and we get even id which is the name of color then mapping it to its corresponding number
 function playerClick(event) {
-   let colorSelected = event.target.id;
-   if (colorSelected == "green") {
-      flashButton(1);
-      playAudio(getColorById(1));
-      playerSequence.push(1);
-   } else if (colorSelected == "red") {
-      flashButton(2);
-      playAudio(getColorById(2));
-      playerSequence.push(2);
-   } else if (colorSelected == "yellow") {
-      flashButton(3);
-      playAudio(getColorById(3));
-      playerSequence.push(3);
-   } else {
-      flashButton(4);
-      playAudio(getColorById(4));
-      playerSequence.push(4);
+   const colorIdMap = {
+      green: 1,
+      red: 2,
+      yellow: 3,
+      blue: 4,
+   };
+
+   const colorSelected = event.target.id;
+   const colorValue = colorIdMap[colorSelected];
+
+   if (colorValue) {
+      flashButton(colorValue);
+      playAudio(getColorById(colorValue));
+      playerSequence.push(colorValue);
+      checkSequence(); //calling checksequence function will check the user sequence with the computer sequence
    }
-   //calling checksequence function will check the user sequence with the computer sequence
-   checkSequence();
 }
 
 //check sequence will check user input one by one with computer sequence if one dont match is a loss and game will reset,else will call add sequence and continue
@@ -110,7 +105,9 @@ function checkSequence() {
       }, 1500);
    }
 }
+
 //reset function to reset all thing and restart game when you lose
+
 function reset() {
    disableButtonWhenComputerTurn();
    computerSequence = [];
@@ -119,20 +116,26 @@ function reset() {
       addToSequence();
    }, 1500);
 }
+
 //starting the game after pressing and key on you keyboard
+
 function startGame() {
    if (computerSequence.length == 0) {
       addToSequence();
    }
 }
+
 //function that disables event listeners
+
 function disableButtonWhenComputerTurn() {
    let buttons = document.querySelectorAll(".btn");
    buttons.forEach((button) => {
       button.removeEventListener("click", playerClick);
    });
 }
+
 //function that enables event listeners
+
 function enableButtonWhenPlayerTurn() {
    let buttons = document.querySelectorAll(".btn");
    buttons.forEach((button) => {
